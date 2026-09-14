@@ -5,6 +5,13 @@ Newest entries at the top.
 
 ## 2026-09-14
 
+- **i3blocks right-click opens the screenshots folder.** Added
+  `do_open_folder()` to `percy-screenshot-ctl.sh`, wired to `BLOCK_BUTTON=3`
+  in block mode (via `xdg-open`, detached with `setsid`/`disown` so it
+  outlives the short-lived blocklet invocation), plus an `open-folder` CLI
+  subcommand. Scoped down from the original idea (which also considered
+  middle-click and opening the latest screenshot) to just this one action.
+
 - **Configurable capture interval.** `install.sh` now takes `-i`/`--interval
   MINUTES` (default `1`) and templates `percy-screenshot.timer`'s
   `OnCalendar=*:0/N` from it instead of a hardcoded 1-minute value.
@@ -31,9 +38,6 @@ Ideas for future work — require explicit go-ahead before implementing:
   service unit.
 - **Timelapse export** — a helper script using `ffmpeg` to stitch a day's
   (or range's) screenshots into a timelapse video.
-- **i3blocks extra actions** — right-click to open the screenshots folder
-  or the most recent screenshot in an image viewer; middle-click to open
-  the folder.
 - **Toggle notifications** — `notify-send` feedback when the i3blocks
   double-click toggles the timer on/off, for confirmation beyond the color
   change.
