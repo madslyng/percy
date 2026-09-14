@@ -25,12 +25,6 @@ Newest entries at the top.
 
 Ideas for future work — require explicit go-ahead before implementing:
 
-- **Privacy: skip/blur sensitive windows** — detect the focused window
-  class (e.g. password managers, private-browsing profiles, video calls)
-  via `xdotool`/`wmctrl` and skip the capture, similar to lock detection.
-- **Pause during screen-sharing/calls** — detect common conferencing apps
-  (Zoom, Meet/Chrome, Teams, OBS) and skip captures while one has focus or
-  is running.
 - **Multi-monitor support** — capture each connected monitor to its own
   file (via `maim`'s `-g`/xrandr geometry) instead of one combined image.
 - **Config file** — support `~/.config/percy/config` (sourced shell vars)
