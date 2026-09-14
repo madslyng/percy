@@ -5,6 +5,21 @@ Newest entries at the top.
 
 ## 2026-09-14
 
+- **Config file support.** New shared `percy-common.sh` (`load_percy_config`),
+  sourced by all three scripts. Reads `~/.config/percy/config` (or
+  `$PERCY_CONFIG_FILE`) and fills in `PERCY_*` defaults, without letting it
+  override variables already present in the environment: snapshots
+  currently-set `PERCY_*` vars via `compgen -v` before sourcing the config
+  file, then re-exports the originals afterward. Precedence is
+  `Environment=`/env var > config file > script default, per the earlier
+  decision (matches git/docker convention). Added `config.example`
+  (installed to `~/.config/percy/config.example`, never as the live
+  config) documenting available settings. Checked for stray `PERCY_*`
+  vars in the systemd user manager/shell environment first — found none.
+  Verified all three precedence cases (default-only, config-only,
+  env-overrides-config) both in isolation and by running the real
+  `percy-screenshot.sh` with a config file present.
+
 - **Automatic hourly timelapse regeneration + H.265.** Added
   `percy-timelapse.service`/`.timer` (`OnCalendar=hourly`, sandboxed like
   the screenshot service but without X11 access) so today's timelapse
@@ -53,12 +68,6 @@ Ideas for future work — require explicit go-ahead before implementing:
 
 - **Multi-monitor support** — capture each connected monitor to its own
   file (via `maim`'s `-g`/xrandr geometry) instead of one combined image.
-- **Config file** — support `~/.config/percy/config` (sourced shell vars)
-  as an alternative to setting everything via `Environment=` in the
-  service unit.
-- **Toggle notifications** — `notify-send` feedback when the i3blocks
-  double-click toggles the timer on/off, for confirmation beyond the color
-  change.
 - **Encryption at rest** — optionally encrypt saved screenshots (e.g. via
   `age` or `gocryptfs`) given they may capture sensitive on-screen data.
 

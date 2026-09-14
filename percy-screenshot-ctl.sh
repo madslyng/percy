@@ -5,6 +5,10 @@
 # timer, right-click opens the screenshots folder.
 set -euo pipefail
 
+# shellcheck source=percy-common.sh
+source "$(dirname "$(readlink -f "$0")")/percy-common.sh"
+load_percy_config
+
 TIMER_UNIT="percy-screenshot.timer"
 DOUBLE_CLICK_MS=400
 STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/percy-screenshot-block-last-click"

@@ -3,6 +3,10 @@
 # skipping the capture while the session is locked.
 set -euo pipefail
 
+# shellcheck source=percy-common.sh
+source "$(dirname "$(readlink -f "$0")")/percy-common.sh"
+load_percy_config
+
 SCREENSHOT_DIR="${PERCY_SCREENSHOT_DIR:-$HOME/Pictures/screenshots}"
 RETENTION_DAYS="${PERCY_SCREENSHOT_RETENTION_DAYS:-7}"
 LOCK_DETECT="${PERCY_LOCK_DETECT:-1}"

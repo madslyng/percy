@@ -59,6 +59,16 @@ if you want it to apply to the timed runs). Screenshots older than 7 days are
 pruned automatically; override with `PERCY_SCREENSHOT_RETENTION_DAYS` (set to
 `0` to disable pruning).
 
+### Config file
+
+Instead of editing `Environment=` lines in the systemd units, you can copy
+`~/.config/percy/config.example` (installed alongside everything else) to
+`~/.config/percy/config` and set `PERCY_*` variables there — it's sourced by
+all the scripts. Precedence is `Environment=`/shell env var > config file >
+built-in default, so an explicitly-set environment variable always wins;
+the config file only fills in values that aren't already set. It's sourced
+as shell code, so treat its permissions like `~/.bashrc`.
+
 If your X session doesn't use `DISPLAY=:0` or the default `~/.Xauthority`,
 edit `~/.config/systemd/user/percy-screenshot.service` after installing and
 adjust the `Environment=` lines, then run `systemctl --user daemon-reload`.

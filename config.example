@@ -1,0 +1,20 @@
+# Example percy config file.
+# Copy to ~/.config/percy/config (or point PERCY_CONFIG_FILE at it) and
+# uncomment/edit what you want. This file is sourced as shell code, so
+# protect its permissions the same way you would ~/.bashrc.
+#
+# Precedence: a variable already set in the environment (e.g. Environment=
+# in a systemd unit) always wins over this file; this file only fills in
+# values that aren't already set.
+
+# Where screenshots (and generated timelapse videos) are stored.
+# PERCY_SCREENSHOT_DIR="$HOME/Pictures/screenshots"
+
+# Delete screenshots older than this many days (0 disables pruning).
+# PERCY_SCREENSHOT_RETENTION_DAYS=7
+
+# Skip capturing while the session is locked (1=on, 0=off).
+# PERCY_LOCK_DETECT=1
+
+# Space-separated locker process names checked by lock detection.
+# PERCY_LOCKER_PROCESSES="i3lock light-locker xflock4 slock xtrlock xsecurelock betterlockscreen"

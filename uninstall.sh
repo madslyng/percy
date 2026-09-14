@@ -12,7 +12,7 @@ systemctl --user stop percy-timelapse.service 2>/dev/null || true
 
 rm -f "$SYSTEMD_USER_DIR/percy-screenshot.service" "$SYSTEMD_USER_DIR/percy-screenshot.timer"
 rm -f "$SYSTEMD_USER_DIR/percy-timelapse.service" "$SYSTEMD_USER_DIR/percy-timelapse.timer"
-rm -f "$BIN_DIR/percy-screenshot.sh" "$BIN_DIR/percy-screenshot-ctl.sh" "$BIN_DIR/percy-timelapse.sh"
+rm -f "$BIN_DIR/percy-screenshot.sh" "$BIN_DIR/percy-screenshot-ctl.sh" "$BIN_DIR/percy-timelapse.sh" "$BIN_DIR/percy-common.sh"
 
 systemctl --user daemon-reload
 systemctl --user reset-failed percy-screenshot.service percy-screenshot.timer 2>/dev/null || true

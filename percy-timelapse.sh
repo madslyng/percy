@@ -2,6 +2,10 @@
 # Stitches a day's (or date range's) percy screenshots into a timelapse video.
 set -euo pipefail
 
+# shellcheck source=percy-common.sh
+source "$(dirname "$(readlink -f "$0")")/percy-common.sh"
+load_percy_config
+
 SCREENSHOT_DIR="${PERCY_SCREENSHOT_DIR:-$HOME/Pictures/screenshots}"
 FPS=24
 DATE=""

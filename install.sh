@@ -47,11 +47,15 @@ mkdir -p "$BIN_DIR" "$SYSTEMD_USER_DIR"
 install -m 755 "$SCRIPT_DIR/percy-screenshot.sh" "$BIN_DIR/percy-screenshot.sh"
 install -m 755 "$SCRIPT_DIR/percy-screenshot-ctl.sh" "$BIN_DIR/percy-screenshot-ctl.sh"
 install -m 755 "$SCRIPT_DIR/percy-timelapse.sh" "$BIN_DIR/percy-timelapse.sh"
+install -m 644 "$SCRIPT_DIR/percy-common.sh" "$BIN_DIR/percy-common.sh"
 install -m 644 "$SCRIPT_DIR/percy-screenshot.service" "$SYSTEMD_USER_DIR/percy-screenshot.service"
 sed "s/%%INTERVAL_MINUTES%%/$INTERVAL_MINUTES/g" "$SCRIPT_DIR/percy-screenshot.timer" >"$SYSTEMD_USER_DIR/percy-screenshot.timer"
 chmod 644 "$SYSTEMD_USER_DIR/percy-screenshot.timer"
 install -m 644 "$SCRIPT_DIR/percy-timelapse.service" "$SYSTEMD_USER_DIR/percy-timelapse.service"
 install -m 644 "$SCRIPT_DIR/percy-timelapse.timer" "$SYSTEMD_USER_DIR/percy-timelapse.timer"
+
+mkdir -p "$HOME/.config/percy"
+install -m 644 "$SCRIPT_DIR/config.example" "$HOME/.config/percy/config.example"
 
 if ! command -v maim >/dev/null 2>&1 && ! command -v scrot >/dev/null 2>&1 && ! command -v import >/dev/null 2>&1; then
     echo "warning: no screenshot tool found. Install one of: maim, scrot, imagemagick" >&2
@@ -76,13 +80,19 @@ Installed:
   $BIN_DIR/percy-screenshot.sh
   $BIN_DIR/percy-screenshot-ctl.sh
   $BIN_DIR/percy-timelapse.sh
+  $BIN_DIR/percy-common.sh
   $SYSTEMD_USER_DIR/percy-screenshot.service
   $SYSTEMD_USER_DIR/percy-screenshot.timer
   $SYSTEMD_USER_DIR/percy-timelapse.service
   $SYSTEMD_USER_DIR/percy-timelapse.timer
+  $HOME/.config/percy/config.example
 
 The timer is enabled and running (screenshots every $INTERVAL_MINUTES minute(s)).
 Screenshots are saved to: ${PERCY_SCREENSHOT_DIR:-$HOME/Pictures/screenshots}
+
+Optional settings can be set via ~/.config/percy/config (see
+~/.config/percy/config.example) or Environment= in the systemd units
+(Environment= always wins over the config file).
 
 If ffmpeg is installed, today's timelapse regenerates every hour on the hour
 at: ${PERCY_SCREENSHOT_DIR:-$HOME/Pictures/screenshots}/timelapse_<today>_to_<today>.mp4
