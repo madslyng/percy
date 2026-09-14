@@ -24,16 +24,11 @@ Ideas for future work — require explicit go-ahead before implementing:
 - **Pause during screen-sharing/calls** — detect common conferencing apps
   (Zoom, Meet/Chrome, Teams, OBS) and skip captures while one has focus or
   is running.
-- **Disk usage cap** — replace/augment the day-based retention with a
-  total-size cap (e.g. `PERCY_MAX_TOTAL_SIZE_MB`), deleting oldest
-  screenshots first once exceeded.
 - **Multi-monitor support** — capture each connected monitor to its own
   file (via `maim`'s `-g`/xrandr geometry) instead of one combined image.
 - **Config file** — support `~/.config/percy/config` (sourced shell vars)
   as an alternative to setting everything via `Environment=` in the
   service unit.
-- **Storage efficiency** — encode captures as WebP/AVIF or downscale to
-  cut disk usage over long retention windows.
 - **Timelapse export** — a helper script using `ffmpeg` to stitch a day's
   (or range's) screenshots into a timelapse video.
 - **i3blocks extra actions** — right-click to open the screenshots folder
