@@ -1,5 +1,7 @@
 # percy
 
+**Per**iodically **C**apturing **Y**ourself
+
 **Automatically captures a screenshot of your display every minute** via a
 `systemd --user` timer, with an i3blocks indicator to see the status and
 toggle it on/off.
