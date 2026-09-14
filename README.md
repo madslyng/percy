@@ -12,7 +12,6 @@ toggle it on/off.
 - i3 (or another X11 window manager) with an active X session.
 - i3blocks, if you want the status/toggle indicator in your bar.
 - One screenshot tool available on `$PATH`: [`maim`](https://github.com/naelstrof/maim) (preferred), `scrot`, or ImageMagick's `import`.
-- ImageMagick (`compare`/`identify`), *optional* — only needed for idle detection (see below). The feature silently disables itself if these aren't installed.
 
 Install a screenshot tool, e.g. on Debian/Ubuntu:
 
@@ -52,27 +51,18 @@ If your X session doesn't use `DISPLAY=:0` or the default `~/.Xauthority`,
 edit `~/.config/systemd/user/percy-screenshot.service` after installing and
 adjust the `Environment=` lines, then run `systemctl --user daemon-reload`.
 
-### Skipping idle screenshots
+### Skipping screenshots while locked
 
-Two mechanisms avoid piling up pointless screenshots when you're not
-actually using the machine, both on by default and configurable via
-`Environment=` in `percy-screenshot.service`:
+The capture is skipped entirely (no file written) if the session appears
+locked, controlled via `Environment=` in `percy-screenshot.service`:
 
-- **Lock detection** (`PERCY_LOCK_DETECT=1`): skips the capture entirely if a
-  screen locker process is running (checks `i3lock`, `light-locker`,
-  `xflock4`, `slock`, `xtrlock`, `xsecurelock`, `betterlockscreen` by
-  default — override with `PERCY_LOCKER_PROCESSES="foo bar"`), or if
-  `loginctl` reports the session's `LockedHint` as locked.
-- **Idle/duplicate detection** (`PERCY_IDLE_DETECT=1`): after capturing,
-  compares the new screenshot against the last one kept using ImageMagick's
-  `compare`. If fewer than `PERCY_DIFF_THRESHOLD_PERCENT` percent of pixels
-  differ (default `0.5`, with a `PERCY_DIFF_FUZZ` color tolerance of `5%` to
-  ignore compression/anti-aliasing noise), the new screenshot is discarded as
-  a near-identical duplicate (e.g. only a statusbar clock changed). Requires
-  `compare`/`identify` from ImageMagick; if they're not installed, every
-  screenshot is kept.
+- **Lock detection** (`PERCY_LOCK_DETECT=1`): checks whether a screen locker
+  process is running (`i3lock`, `light-locker`, `xflock4`, `slock`,
+  `xtrlock`, `xsecurelock`, `betterlockscreen` by default — override with
+  `PERCY_LOCKER_PROCESSES="foo bar"`), or whether `loginctl` reports the
+  session's `LockedHint` as locked.
 
-Set either variable to `0` to disable it.
+Set `PERCY_LOCK_DETECT=0` to disable it.
 
 ### Add the i3blocks indicator
 
