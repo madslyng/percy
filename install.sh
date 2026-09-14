@@ -46,6 +46,7 @@ mkdir -p "$BIN_DIR" "$SYSTEMD_USER_DIR"
 
 install -m 755 "$SCRIPT_DIR/percy-screenshot.sh" "$BIN_DIR/percy-screenshot.sh"
 install -m 755 "$SCRIPT_DIR/percy-screenshot-ctl.sh" "$BIN_DIR/percy-screenshot-ctl.sh"
+install -m 755 "$SCRIPT_DIR/percy-timelapse.sh" "$BIN_DIR/percy-timelapse.sh"
 install -m 644 "$SCRIPT_DIR/percy-screenshot.service" "$SYSTEMD_USER_DIR/percy-screenshot.service"
 sed "s/%%INTERVAL_MINUTES%%/$INTERVAL_MINUTES/g" "$SCRIPT_DIR/percy-screenshot.timer" >"$SYSTEMD_USER_DIR/percy-screenshot.timer"
 chmod 644 "$SYSTEMD_USER_DIR/percy-screenshot.timer"
@@ -65,6 +66,7 @@ cat <<EOF
 Installed:
   $BIN_DIR/percy-screenshot.sh
   $BIN_DIR/percy-screenshot-ctl.sh
+  $BIN_DIR/percy-timelapse.sh
   $SYSTEMD_USER_DIR/percy-screenshot.service
   $SYSTEMD_USER_DIR/percy-screenshot.timer
 

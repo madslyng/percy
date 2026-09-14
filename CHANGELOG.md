@@ -5,6 +5,17 @@ Newest entries at the top.
 
 ## 2026-09-14
 
+- **Timelapse export.** New `percy-timelapse.sh`, standalone (not tied to
+  the timer). Filters screenshots by `--date` or `--from`/`--to` (string
+  comparison on the `YYYY-MM-DD` filename portion), symlinks the matches
+  into a temp dir with sequential zero-padded names (avoids relying on
+  glob-sort order or juggling per-image durations in an ffmpeg concat
+  list), then encodes with `ffmpeg -framerate <fps> -i tmp/%06d.png`.
+  `--fps` is playback speed, not capture rate. Installed via `install.sh`
+  and removed via `uninstall.sh` alongside the other scripts. Verified
+  output dimensions/frame count with `ffprobe`, plus invalid-date,
+  empty-range, and mutually-exclusive-flag error paths.
+
 - **i3blocks right-click opens the screenshots folder.** Added
   `do_open_folder()` to `percy-screenshot-ctl.sh`, wired to `BLOCK_BUTTON=3`
   in block mode (via `xdg-open`, detached with `setsid`/`disown` so it
@@ -30,8 +41,6 @@ Ideas for future work — require explicit go-ahead before implementing:
 - **Config file** — support `~/.config/percy/config` (sourced shell vars)
   as an alternative to setting everything via `Environment=` in the
   service unit.
-- **Timelapse export** — a helper script using `ffmpeg` to stitch a day's
-  (or range's) screenshots into a timelapse video.
 - **Toggle notifications** — `notify-send` feedback when the i3blocks
   double-click toggles the timer on/off, for confirmation beyond the color
   change.

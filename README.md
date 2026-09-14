@@ -12,6 +12,7 @@ toggle it on/off.
 - i3 (or another X11 window manager) with an active X session.
 - i3blocks, if you want the status/toggle indicator in your bar.
 - One screenshot tool available on `$PATH`: [`maim`](https://github.com/naelstrof/maim) (preferred), `scrot`, or ImageMagick's `import`.
+- `ffmpeg`, *optional* — only needed for [timelapse export](#timelapse-export).
 
 Install a screenshot tool, e.g. on Debian/Ubuntu:
 
@@ -95,6 +96,7 @@ Then reload i3 (`$mod+Shift+r`) or restart i3blocks.
 - The i3blocks indicator shows 📷 on/off with green/red text depending on
   whether the timer is active.
 - **Double-click** the indicator to toggle the timer on or off.
+- **Right-click** the indicator to open the screenshots folder.
 - A single click just refreshes the displayed status.
 
 You can also control it from a terminal with `percy-screenshot-ctl.sh`:
@@ -104,6 +106,7 @@ percy-screenshot-ctl.sh status    # prints "on" or "off"
 percy-screenshot-ctl.sh enable    # turn the timer on (systemctl --user enable --now)
 percy-screenshot-ctl.sh disable   # turn the timer off (systemctl --user disable --now)
 percy-screenshot-ctl.sh toggle    # flip the current state
+percy-screenshot-ctl.sh open-folder # open the screenshots folder
 ```
 
 Or use `systemctl` directly:
@@ -112,6 +115,22 @@ Or use `systemctl` directly:
 systemctl --user status percy-screenshot.timer
 journalctl --user -u percy-screenshot.service -e   # view capture logs/errors
 ```
+
+### Timelapse export
+
+Stitch a day's (or a date range's) screenshots into a video with `ffmpeg`
+(install it separately — it's only needed for this script):
+
+```sh
+percy-timelapse.sh                                   # today, default 24fps
+percy-timelapse.sh --date 2026-09-14                 # a specific day
+percy-timelapse.sh --from 2026-09-01 --to 2026-09-07 # a date range
+percy-timelapse.sh --fps 10 --output ~/Videos/out.mp4
+```
+
+`--fps` controls playback speed (how many captured frames play per second of
+video), not the original capture rate. Output defaults to
+`timelapse_<from>_to_<to>.mp4` inside the screenshots directory.
 
 ## Uninstall
 
