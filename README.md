@@ -130,7 +130,15 @@ percy-timelapse.sh --fps 10 --output ~/Videos/out.mp4
 
 `--fps` controls playback speed (how many captured frames play per second of
 video), not the original capture rate. Output defaults to
-`timelapse_<from>_to_<to>.mp4` inside the screenshots directory.
+`timelapse_<from>_to_<to>.mp4` inside the screenshots directory, encoded as
+H.265 (`.mp4`, `hvc1` tag for player compatibility).
+
+If `ffmpeg` was installed at install-time, `percy-timelapse.timer` regenerates
+**today's** timelapse every hour on the hour, overwriting the same
+`timelapse_<today>_to_<today>.mp4` in place (the write is atomic, so an
+interrupted run never corrupts the existing file). If you install `ffmpeg`
+after running `install.sh`, just re-run `install.sh` to pick it up, or enable
+manually: `systemctl --user enable --now percy-timelapse.timer`.
 
 ## Uninstall
 

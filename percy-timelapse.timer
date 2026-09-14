@@ -1,0 +1,11 @@
+[Unit]
+Description=Run percy-timelapse.service every hour, on the hour
+
+[Timer]
+OnCalendar=hourly
+AccuracySec=1s
+Persistent=true
+Unit=percy-timelapse.service
+
+[Install]
+WantedBy=timers.target

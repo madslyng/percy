@@ -81,7 +81,7 @@ fi
 OUTPUT="${OUTPUT:-$SCREENSHOT_DIR/timelapse_${FROM}_to_${TO}.mp4}"
 
 tmpdir="$(mktemp -d)"
-trap 'rm -rf "$tmpdir"' EXIT
+trap 'rm -rf "$tmpdir" "$OUTPUT.tmp.mp4"' EXIT
 
 i=0
 for f in "${files[@]}"; do
@@ -91,6 +91,9 @@ for f in "${files[@]}"; do
 done
 
 ffmpeg -y -framerate "$FPS" -i "$tmpdir/%06d.png" \
-    -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -pix_fmt yuv420p "$OUTPUT"
+    -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -pix_fmt yuv420p \
+    -c:v libx265 -crf 28 -preset medium -tag:v hvc1 "$OUTPUT.tmp.mp4"
+# Atomic swap: a failed/interrupted encode never corrupts the previous file.
+mv "$OUTPUT.tmp.mp4" "$OUTPUT"
 
 echo "Wrote $OUTPUT (${#files[@]} frames @ ${FPS}fps, $FROM to $TO)"

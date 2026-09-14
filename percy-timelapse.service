@@ -1,0 +1,31 @@
+[Unit]
+Description=Regenerate today's percy screenshot timelapse
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/percy-timelapse.sh
+
+# --- Sandboxing ---
+# No X11/display access needed here, just reading screenshots and running
+# ffmpeg; writes are confined to $HOME (the screenshots directory).
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=false
+PrivateTmp=true
+ProtectProc=invisible
+ProcSubset=pid
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+RestrictNamespaces=true
+LockPersonality=true
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+UMask=0077

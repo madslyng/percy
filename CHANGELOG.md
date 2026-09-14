@@ -5,6 +5,21 @@ Newest entries at the top.
 
 ## 2026-09-14
 
+- **Automatic hourly timelapse regeneration + H.265.** Added
+  `percy-timelapse.service`/`.timer` (`OnCalendar=hourly`, sandboxed like
+  the screenshot service but without X11 access) so today's timelapse
+  regenerates every hour on the hour, always overwriting
+  `timelapse_<date>_to_<date>.mp4`. `install.sh` installs both units but
+  only `enable --now`s the timer if `ffmpeg` is present (warns otherwise);
+  `uninstall.sh` tears them down too. Made the ffmpeg write atomic
+  (`$OUTPUT.tmp.mp4` then `mv`) so an interrupted hourly run never
+  corrupts the existing file. Also switched the encoder from H.264 to
+  H.265 (`libx265 -crf 28 -tag:v hvc1`, still `.mp4`) for smaller files;
+  measured ~7.5% smaller on identical frames (9.3M vs 8.6M for 102
+  frames) — more modest than H.265's usual 30-50% claim, likely because
+  screenshots (sharp text/UI edges) compress differently than natural
+  video. Verified the sandboxed service runs and produces valid output.
+
 - **Timelapse export.** New `percy-timelapse.sh`, standalone (not tied to
   the timer). Filters screenshots by `--date` or `--from`/`--to` (string
   comparison on the `YYYY-MM-DD` filename portion), symlinks the matches
