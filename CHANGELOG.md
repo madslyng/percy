@@ -3,6 +3,42 @@
 Running log of notable decisions and fixes made while developing percy.
 Newest entries at the top.
 
+## Backlog (proposed, not yet approved)
+
+Ideas for future work — require explicit go-ahead before implementing:
+
+- **Privacy: skip/blur sensitive windows** — detect the focused window
+  class (e.g. password managers, private-browsing profiles, video calls)
+  via `xdotool`/`wmctrl` and skip the capture, similar to lock detection.
+- **Pause during screen-sharing/calls** — detect common conferencing apps
+  (Zoom, Meet/Chrome, Teams, OBS) and skip captures while one has focus or
+  is running.
+- **Disk usage cap** — replace/augment the day-based retention with a
+  total-size cap (e.g. `PERCY_MAX_TOTAL_SIZE_MB`), deleting oldest
+  screenshots first once exceeded.
+- **Multi-monitor support** — capture each connected monitor to its own
+  file (via `maim`'s `-g`/xrandr geometry) instead of one combined image.
+- **Configurable interval** — let `install.sh` take a `--interval` flag to
+  template the `OnCalendar` value instead of a hardcoded 1 minute.
+- **Config file** — support `~/.config/percy/config` (sourced shell vars)
+  as an alternative to setting everything via `Environment=` in the
+  service unit.
+- **Storage efficiency** — encode captures as WebP/AVIF or downscale to
+  cut disk usage over long retention windows.
+- **Timelapse export** — a helper script using `ffmpeg` to stitch a day's
+  (or range's) screenshots into a timelapse video.
+- **i3blocks extra actions** — right-click to open the screenshots folder
+  or the most recent screenshot in an image viewer; middle-click to open
+  the folder.
+- **Toggle notifications** — `notify-send` feedback when the i3blocks
+  double-click toggles the timer on/off, for confirmation beyond the color
+  change.
+- **systemd hardening** — add sandboxing directives (`ProtectSystem`,
+  `PrivateTmp`, `NoNewPrivileges`, etc.) to `percy-screenshot.service`
+  where compatible with X11 screenshot access.
+- **Encryption at rest** — optionally encrypt saved screenshots (e.g. via
+  `age` or `gocryptfs`) given they may capture sensitive on-screen data.
+
 ## 2026-09-14
 
 - **Fixed timer never re-firing.** `percy-screenshot.timer` used
