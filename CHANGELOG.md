@@ -3,18 +3,16 @@
 Running log of notable decisions and fixes made while developing percy.
 Newest entries at the top.
 
-## Technology assessment (2026-09-14)
+## 2026-09-14
 
-Reviewed whether systemd timer + bash is the right base. Conclusion: keep
-it. systemd `OnCalendar` beats cron/anacron/a sleep-loop daemon for this
-(native session integration, journald, `Persistent=` catch-up, no extra
-process to supervise). Bash is fine for the current scope, but the two
-real bugs found this session (scrot overwrite, `compare -fuzz` float
-regex) came directly from bash's string/arithmetic footguns — if backlog
-items needing real state/parsing (disk quota, config file, multi-monitor
-geometry) land, migrate `percy-screenshot.sh`'s core logic to Python then,
-keeping systemd units/i3blocks wrapper as bash. Added smoke-testing as a
-standing suggestion regardless of what's built next.
+- **Configurable capture interval.** `install.sh` now takes `-i`/`--interval
+  MINUTES` (default `1`) and templates `percy-screenshot.timer`'s
+  `OnCalendar=*:0/N` from it instead of a hardcoded 1-minute value.
+  `install.sh` always regenerates the timer unit and restarts it, so it's
+  idempotent: re-running with a different `--interval` updates an
+  already-installed service, and re-running with no flag resets it back to
+  the 1-minute default. Verified `-i`, `--interval`, `--interval=N`, invalid
+  input rejection, and that `list-timers` reflects the new schedule.
 
 ## Backlog (proposed, not yet approved)
 
@@ -31,8 +29,6 @@ Ideas for future work — require explicit go-ahead before implementing:
   screenshots first once exceeded.
 - **Multi-monitor support** — capture each connected monitor to its own
   file (via `maim`'s `-g`/xrandr geometry) instead of one combined image.
-- **Configurable interval** — let `install.sh` take a `--interval` flag to
-  template the `OnCalendar` value instead of a hardcoded 1 minute.
 - **Config file** — support `~/.config/percy/config` (sourced shell vars)
   as an alternative to setting everything via `Environment=` in the
   service unit.

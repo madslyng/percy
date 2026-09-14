@@ -33,6 +33,17 @@ From this directory:
 ./install.sh
 ```
 
+Captures every minute by default. Use `-i`/`--interval` to change how often
+(in minutes):
+
+```sh
+./install.sh --interval 5   # every 5 minutes
+```
+
+`install.sh` is idempotent — re-run it any time (e.g. with a different
+`--interval`) to update an already-installed service; omitting the flag
+resets the interval back to the 1-minute default.
+
 This will:
 
 - Copy `percy-screenshot.sh` and `percy-screenshot-ctl.sh` to `~/.local/bin`.

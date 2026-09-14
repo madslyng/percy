@@ -1,10 +1,11 @@
 [Unit]
-Description=Run percy-screenshot.service every minute
+Description=Run percy-screenshot.service every %%INTERVAL_MINUTES%% minute(s)
 
 [Timer]
 # OnCalendar (absolute) is used instead of OnBootSec/OnUnitActiveSec, which
 # can fail to reschedule after the timer is restarted/reinstalled.
-OnCalendar=*:0/1
+# %%INTERVAL_MINUTES%% is substituted by install.sh (see -i/--interval).
+OnCalendar=*:0/%%INTERVAL_MINUTES%%
 AccuracySec=1s
 Persistent=true
 Unit=percy-screenshot.service
