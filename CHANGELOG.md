@@ -33,13 +33,19 @@ Ideas for future work — require explicit go-ahead before implementing:
 - **Toggle notifications** — `notify-send` feedback when the i3blocks
   double-click toggles the timer on/off, for confirmation beyond the color
   change.
-- **systemd hardening** — add sandboxing directives (`ProtectSystem`,
-  `PrivateTmp`, `NoNewPrivileges`, etc.) to `percy-screenshot.service`
-  where compatible with X11 screenshot access.
 - **Encryption at rest** — optionally encrypt saved screenshots (e.g. via
   `age` or `gocryptfs`) given they may capture sensitive on-screen data.
 
 ## 2026-09-14
+
+- **Hardened `percy-screenshot.service` with systemd sandboxing.** Added
+  `NoNewPrivileges`, `ProtectSystem=full`, `PrivateTmp`, `ProtectProc=invisible`,
+  kernel/clock/hostname protections, restricted namespaces, locked
+  personality, W^X memory, `AF_UNIX`-only sockets, an empty capability
+  bounding set, `@system-service` syscall filter, and `UMask=0077`.
+  `ProtectHome` is left off since screenshots are written under `$HOME`.
+  Verified with `systemd-analyze security` (1.9 OK) and confirmed captures
+  and `pgrep`-based lock detection still work under the sandbox.
 
 - **Fixed timer never re-firing.** `percy-screenshot.timer` used
   `OnBootSec`/`OnUnitActiveSec` (monotonic timers). After being
