@@ -3,6 +3,19 @@
 Running log of notable decisions and fixes made while developing percy.
 Newest entries at the top.
 
+## Technology assessment (2026-09-14)
+
+Reviewed whether systemd timer + bash is the right base. Conclusion: keep
+it. systemd `OnCalendar` beats cron/anacron/a sleep-loop daemon for this
+(native session integration, journald, `Persistent=` catch-up, no extra
+process to supervise). Bash is fine for the current scope, but the two
+real bugs found this session (scrot overwrite, `compare -fuzz` float
+regex) came directly from bash's string/arithmetic footguns — if backlog
+items needing real state/parsing (disk quota, config file, multi-monitor
+geometry) land, migrate `percy-screenshot.sh`'s core logic to Python then,
+keeping systemd units/i3blocks wrapper as bash. Added smoke-testing as a
+standing suggestion regardless of what's built next.
+
 ## Backlog (proposed, not yet approved)
 
 Ideas for future work — require explicit go-ahead before implementing:
